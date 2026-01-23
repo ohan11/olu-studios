@@ -7,10 +7,10 @@ const storeDomain = import.meta.env.SHOPIFY_STORE_DOMAIN || '';
 const allCollectionId = import.meta.env.SHOPIFY_ALL_COLLECTION_ID || '';
 ---
 
-<Layout title="Shop All - Olu Studios">
+<Layout title="Shop - Olu Studios">
   <div class="shop-page">
     <div class="container">
-      <h1 class="page-title">Shop All</h1>
+      <h1 class="page-title">Shop</h1>
       {allCollectionId && storeDomain ? (
         <ShopifyCollection collectionId={allCollectionId} storeDomain={storeDomain} />
       ) : (
