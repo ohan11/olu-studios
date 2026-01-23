@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact - Olu Studios">
+  <div class="contact-page">
+    <div class="container">
+      <h1 class="page-title">Contact</h1>
+      
+      <div class="contact-content">
+        <div class="contact-info">
+          <p>Get in touch with us!</p>
+          <p class="contact-email">
+            <a href="mailto:hello@olustudios.com">hello@olustudios.com</a>
+          </p>
+        </div>
+        
+        <div class="contact-form-placeholder">
+          <p>Contact form coming soon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .contact-page {
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+  }
+  
+  .page-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+  }
+  
+  .contact-content {
+    max-width: 600px;
+  }
+  
+  .contact-info {
+    margin-bottom: 40px;
+  }
+  
+  .contact-info p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+  
+  .contact-email {
+    font-size: 20px;
+  }
+  
+  .contact-email a {
+    color: var(--hot-pink);
+    text-decoration: none;
+  }
+  
+  .contact-email a:hover {
+    text-decoration: underline;
+  }
+  
+  .contact-form-placeholder {
+    padding: 40px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text-light);
+  }
+  
+  @media (max-width: 768px) {
+    .contact-page {
+      padding: 40px 0;
+    }
+    
+    .page-title {
+      font-size: 36px;
+      margin-bottom: 32px;
+    }
+  }
+</style>

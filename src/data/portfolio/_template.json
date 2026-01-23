@@ -1,0 +1,9 @@
+{
+  "id": "portfolio-{unique-id}",
+  "title": "Artwork Title",
+  "description": "Description of the artwork",
+  "images": ["/portfolio/image-filename.jpg"],
+  "date": "2024",
+  "collection": "collection-name",
+  "shopProductHandle": "product-handle-from-shopify-or-null"
+}

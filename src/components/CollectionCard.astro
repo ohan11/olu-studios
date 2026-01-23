@@ -1,0 +1,71 @@
+---
+import ProtectedImage from './ProtectedImage.astro';
+
+interface Props {
+  title: string;
+  image: string;
+  link: string;
+}
+
+const { title, image, link } = Astro.props;
+---
+
+<a href={link} class="collection-card">
+  <div class="collection-image">
+    <ProtectedImage src={image} alt={title} width="100%" height="100%" />
+  </div>
+  <div class="collection-overlay">
+    <h2 class="collection-title">{title}</h2>
+  </div>
+</a>
+
+<style>
+  .collection-card {
+    display: block;
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    text-decoration: none;
+    background: var(--bg-light);
+  }
+  
+  .collection-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  .collection-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .collection-card:hover .collection-image img {
+    transform: scale(1.05);
+  }
+  
+  .collection-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: white;
+  }
+  
+  .collection-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .collection-title {
+      font-size: 20px;
+    }
+  }
+</style>

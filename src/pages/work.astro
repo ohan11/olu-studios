@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProtectedImage from '../components/ProtectedImage.astro';
+import { getPortfolioItems } from '../lib/portfolio';
+
+const portfolioItems = await getPortfolioItems();
+---
+
+<Layout title="Work - Olu Studios">
+  <div class="work-page">
+    <div class="container">
+      <h1 class="page-title">Work</h1>
+      
+      {portfolioItems.length > 0 ? (
+        <div class="work-grid">
+          {portfolioItems.map((item) => (
+            <div class="work-item">
+              {item.images.map((image) => (
+                <ProtectedImage src={image} alt={item.title || 'Artwork'} />
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="no-work">
+          <p>Work coming soon!</p>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .work-page {
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+  }
+  
+  .page-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+  }
+  
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 32px;
+  }
+
+  .work-item {
+    width: 100%;
+  }
+
+  .work-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .no-work {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-light);
+  }
+  
+  @media (max-width: 768px) {
+    .work-page {
+      padding: 40px 0;
+    }
+    
+    .page-title {
+      font-size: 36px;
+      margin-bottom: 32px;
+    }
+    
+    .work-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+  }
+</style>

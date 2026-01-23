@@ -1,0 +1,228 @@
+---
+// Header component with logo, navigation dropdown, and cart
+---
+
+<header class="site-header">
+  <div class="header-content">
+    <nav class="header-left">
+      <div class="nav-dropdown">
+        <a href="/shop" class="nav-link">shop</a>
+        <div class="dropdown-menu">
+          <a href="/shop">shop all</a>
+          <a href="/shop/originals">shop originals</a>
+          <a href="/shop/prints">shop prints</a>
+          <a href="/shop/olu-airlines">shop olu airlines</a>
+        </div>
+      </div>
+      <a href="/work" class="nav-link">work</a>
+      <a href="/contact" class="nav-link">contact</a>
+    </nav>
+    
+    <div class="header-center">
+      <a href="/" class="logo">
+        <img src="/images/logo.png" alt="SLU" />
+      </a>
+    </div>
+    
+    <div class="header-right">
+      <!-- Removed profile and cart buttons -->
+    </div>
+    
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="/shop">shop all</a>
+    <a href="/shop/originals">shop originals</a>
+    <a href="/shop/prints">shop prints</a>
+    <a href="/shop/olu-airlines">shop olu airlines</a>
+    <a href="/work">work</a>
+    <a href="/contact">contact</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    background: var(--bg-white);
+    border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px 16px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+    justify-content: flex-start;
+  }
+  
+  .header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  
+  .logo {
+    display: block;
+    text-decoration: none;
+  }
+  
+  .logo img {
+    height: 48px;
+    width: auto;
+    display: block;
+  }
+  
+  .nav-link {
+    font-size: 14px;
+    text-transform: lowercase;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  .nav-link:hover {
+    color: var(--hot-pink);
+  }
+  
+  .nav-dropdown {
+    position: relative;
+  }
+  
+  .nav-dropdown > .nav-link::after {
+    content: ' ▼';
+    font-size: 10px;
+    vertical-align: middle;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
+  }
+  
+  .nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: lowercase;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+  .dropdown-menu a:hover {
+    background: var(--bg-light);
+    color: var(--hot-pink);
+  }
+  
+  .header-right {
+    flex: 1;
+  }
+  
+  .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+  
+  .mobile-menu-btn span {
+    width: 24px;
+    height: 2px;
+    background: var(--text-dark);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-white);
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  .mobile-nav.active {
+    display: flex;
+  }
+  
+  .mobile-nav a {
+    font-size: 16px;
+    text-transform: lowercase;
+    color: var(--text-dark);
+    text-decoration: none;
+    padding: 8px 0;
+  }
+  
+  .mobile-nav a:hover {
+    color: var(--hot-pink);
+  }
+  
+  @media (max-width: 768px) {
+    .header-left {
+      display: none;
+    }
+    
+    .mobile-menu-btn {
+      display: flex;
+    }
+    
+    .header-center {
+      flex: 1;
+      justify-content: center;
+    }
+    
+    .logo img {
+      height: 38px;
+    }
+  }
+</style>
+
+<script>
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileNav?.classList.toggle('active');
+    mobileMenuBtn?.classList.toggle('active');
+  });
+  
+</script>

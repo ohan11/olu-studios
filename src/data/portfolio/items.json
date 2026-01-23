@@ -1,0 +1,29 @@
+[
+  {
+    "id": "portfolio-1",
+    "title": "Los Angeles",
+    "description": "Vintage travel poster",
+    "images": ["/portfolio/los-angeles.jpg"],
+    "date": "2024",
+    "collection": "travel",
+    "shopProductHandle": null
+  },
+  {
+    "id": "portfolio-2",
+    "title": "Night Sky",
+    "description": "Abstract night sky painting",
+    "images": ["/portfolio/night-sky.jpg"],
+    "date": "2024",
+    "collection": "abstract",
+    "shopProductHandle": null
+  },
+  {
+    "id": "portfolio-3",
+    "title": "City Lights",
+    "description": "Abstract city lights painting",
+    "images": ["/portfolio/city-lights.jpg"],
+    "date": "2024",
+    "collection": "abstract",
+    "shopProductHandle": null
+  }
+]

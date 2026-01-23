@@ -1,0 +1,38 @@
+[
+  {
+    "id": "collection-1",
+    "title": "AND",
+    "image": "/portfolio/collections/and.jpg",
+    "link": "/shop?collection=and"
+  },
+  {
+    "id": "collection-2",
+    "title": "ANA",
+    "image": "/portfolio/collections/ana.jpg",
+    "link": "/shop?collection=ana"
+  },
+  {
+    "id": "collection-3",
+    "title": "LAND",
+    "image": "/portfolio/collections/land.jpg",
+    "link": "/shop?collection=land"
+  },
+  {
+    "id": "collection-4",
+    "title": "POR",
+    "image": "/portfolio/collections/por.jpg",
+    "link": "/shop?collection=por"
+  },
+  {
+    "id": "collection-5",
+    "title": "GREECE",
+    "image": "/portfolio/collections/greece.jpg",
+    "link": "/shop?collection=greece"
+  },
+  {
+    "id": "collection-6",
+    "title": "MO",
+    "image": "/portfolio/collections/mo.jpg",
+    "link": "/shop?collection=mo"
+  }
+]

@@ -1,0 +1,208 @@
+---
+import announcementsData from '../data/announcements.json';
+
+const { enabled, items } = announcementsData;
+const announcements = enabled && items.length > 0 ? items : [];
+---
+
+{announcements.length > 0 && (
+  <div class="announcement-banner" id="announcement-banner">
+    <button class="announcement-nav announcement-nav-prev" aria-label="Previous announcement">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    
+    <div class="announcement-content">
+      {announcements.map((item, index) => (
+        <div class={`announcement-item ${index === 0 ? 'active' : ''}`} data-index={index}>
+          {item.link ? (
+            <a href={item.link} set:html={item.text} />
+          ) : (
+            <span set:html={item.text} />
+          )}
+        </div>
+      ))}
+    </div>
+    
+    <button class="announcement-nav announcement-nav-next" aria-label="Next announcement">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+)}
+
+<style>
+  .announcement-banner {
+    background-color: var(--hot-pink);
+    color: white;
+    padding: 7.65px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .announcement-nav {
+    color: #fad3dd;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  .announcement-nav:hover {
+    opacity: 0.7;
+  }
+  
+  .announcement-nav:active {
+    opacity: 0.5;
+  }
+  
+  .announcement-content {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    min-height: 25.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .announcement-item {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .announcement-item.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    position: relative;
+  }
+  
+  .announcement-item a,
+  .announcement-item span {
+    color: #fad3dd;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1;
+    display: inline-block;
+  }
+  
+  .announcement-item a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .announcement-nav {
+      padding: 2px;
+    }
+    
+    .announcement-nav svg {
+      width: 12px;
+      height: 12px;
+    }
+    
+    .announcement-item a,
+    .announcement-item span {
+      font-size: 10px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    function initAnnouncements() {
+      const banner = document.getElementById('announcement-banner');
+      if (!banner) return;
+      
+      const items = banner.querySelectorAll('.announcement-item');
+      const prevBtn = banner.querySelector('.announcement-nav-prev');
+      const nextBtn = banner.querySelector('.announcement-nav-next');
+      
+      if (items.length <= 1) {
+        // Hide navigation if only one item
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        return;
+      }
+      
+      let currentIndex = 0;
+      let autoScrollInterval = null;
+      
+      function showItem(index) {
+        items.forEach(function(item, i) {
+          if (i === index) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+        currentIndex = index;
+      }
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            autoScrollInterval = null;
+          }
+          const newIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+          showItem(newIndex);
+          startAutoScroll();
+        });
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            autoScrollInterval = null;
+          }
+          const newIndex = currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+          showItem(newIndex);
+          startAutoScroll();
+        });
+      }
+      
+      function startAutoScroll() {
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval);
+        }
+        autoScrollInterval = setInterval(function() {
+          const newIndex = currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+          showItem(newIndex);
+        }, 3000);
+      }
+      
+      // Start auto-scroll
+      startAutoScroll();
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnnouncements);
+    } else {
+      initAnnouncements();
+    }
+  })();
+</script>

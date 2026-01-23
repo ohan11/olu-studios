@@ -1,0 +1,55 @@
+---
+interface Props {
+  productId: string;
+  variantId?: string;
+  storeDomain: string;
+  class?: string;
+}
+
+const { productId, variantId, storeDomain, class: className = '' } = Astro.props;
+const buttonId = `shopify-buy-button-${productId}-${variantId || 'default'}`;
+---
+
+<div id={buttonId} class={`shopify-buy-button ${className}`} data-product-id={productId} data-variant-id={variantId || ''} data-store-domain={storeDomain}></div>
+
+<script define:vars={{ buttonId, productId, variantId, storeDomain }}>
+  (function() {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+    
+    if (productId && storeDomain) {
+      // Shopify Buy Button SDK initialization
+      // This will be implemented when Shopify credentials are configured
+      // For now, we'll create a simple buy button that links to Shopify
+      const variant = variantId || productId;
+      button.innerHTML = `
+        <a href="https://${storeDomain}/cart/${variant}:1" 
+           class="buy-button" 
+           target="_blank">
+          Add to Cart
+        </a>
+      `;
+    }
+  })();
+</script>
+
+<style>
+  .shopify-buy-button {
+    margin-top: 12px;
+  }
+  
+  .buy-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--hot-pink);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+  
+  .buy-button:hover {
+    background: var(--hot-pink-dark);
+  }
+</style>

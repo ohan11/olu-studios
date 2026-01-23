@@ -1,0 +1,109 @@
+---
+interface Props {
+  collectionId: string;
+  storeDomain: string;
+  class?: string;
+}
+
+const { collectionId, storeDomain, class: className = '' } = Astro.props;
+const containerId = `shopify-collection-${collectionId}`;
+const accessToken = import.meta.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || '';
+---
+
+<div id={containerId} class={`shopify-collection ${className}`} data-collection-id={collectionId} data-store-domain={storeDomain} data-access-token={accessToken}></div>
+
+<script define:vars={{ containerId, collectionId, storeDomain, accessToken }}>
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (!collectionId || !storeDomain || !accessToken) {
+      console.warn('Shopify collection configuration missing');
+      return;
+    }
+
+    // Check if SDK is already loaded
+    if (typeof ShopifyBuy !== 'undefined') {
+      initShopifyCollection();
+    } else {
+      // Load Shopify Buy Button SDK
+      const script = document.createElement('script');
+      script.src = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      script.async = true;
+      
+      script.onload = function() {
+        if (typeof ShopifyBuy !== 'undefined') {
+          initShopifyCollection();
+        }
+      };
+      
+      document.head.appendChild(script);
+    }
+
+    function initShopifyCollection() {
+      const client = ShopifyBuy.buildClient({
+        domain: storeDomain,
+        storefrontAccessToken: accessToken
+      });
+
+      const ui = ShopifyBuy.UI.init(client);
+      
+      ui.createComponent('collection', {
+        id: collectionId,
+        node: container,
+        options: {
+          product: {
+            styles: {
+              product: {
+                '@media (min-width: 601px)': {
+                  'max-width': 'calc(25% - 20px)',
+                  'margin-left': '20px',
+                  'margin-bottom': '50px'
+                }
+              },
+              button: {
+                'background-color': '#FF3160',
+                ':hover': {
+                  'background-color': '#E02952'
+                },
+                'border-radius': '4px'
+              }
+            },
+            contents: {
+              img: false,
+              imgWithCarousel: true,
+              title: true,
+              price: true,
+              button: true,
+              buttonWithQuantity: false
+            },
+            text: {
+              button: 'Add to cart'
+            }
+          },
+          cart: {
+            startOpen: false,
+            popup: false
+          },
+          toggle: {
+            styles: {
+              toggle: {
+                'background-color': '#FF3160',
+                ':hover': {
+                  'background-color': '#E02952'
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .shopify-collection {
+    width: 100%;
+    min-height: 400px;
+  }
+</style>

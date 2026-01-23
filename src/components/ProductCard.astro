@@ -1,0 +1,84 @@
+---
+import type { ShopifyProduct } from '../lib/shopify';
+import ProtectedImage from './ProtectedImage.astro';
+import ShopifyButton from './ShopifyButton.astro';
+
+interface Props {
+  product: ShopifyProduct;
+  storeDomain?: string;
+}
+
+const { product, storeDomain = '' } = Astro.props;
+const imageUrl = product.images.edges[0]?.node.url || '';
+const imageAlt = product.images.edges[0]?.node.altText || product.title;
+const price = product.priceRange.minVariantPrice.amount;
+const currency = product.priceRange.minVariantPrice.currencyCode;
+const firstVariant = product.variants.edges[0]?.node;
+---
+
+<a href={`/shop/${product.handle}`} class="product-card">
+  <div class="product-image">
+    <ProtectedImage src={imageUrl} alt={imageAlt} width="100%" />
+  </div>
+  <div class="product-info">
+    <h3 class="product-title">{product.title}</h3>
+    <p class="product-price">{currency} {parseFloat(price).toFixed(2)}</p>
+    {storeDomain && firstVariant && (
+      <div class="product-button" onclick="event.preventDefault(); event.stopPropagation();">
+        <ShopifyButton 
+          productId={product.id.replace('gid://shopify/Product/', '')}
+          variantId={firstVariant.id.replace('gid://shopify/ProductVariant/', '')}
+          storeDomain={storeDomain}
+        />
+      </div>
+    )}
+  </div>
+</a>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: transform 0.2s ease;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .product-image {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--bg-light);
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .product-info {
+    padding: 16px 0;
+  }
+  
+  .product-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+  }
+  
+  .product-price {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+  
+  .product-button {
+    margin-top: auto;
+  }
+</style>

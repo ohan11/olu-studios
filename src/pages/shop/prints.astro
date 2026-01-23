@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ShopifyCollection from '../../components/ShopifyCollection.astro';
+
+const storeDomain = import.meta.env.SHOPIFY_STORE_DOMAIN || '';
+const printsCollectionId = import.meta.env.SHOPIFY_PRINTS_COLLECTION_ID || '';
+---
+
+<Layout title="Shop Prints - Olu Studios">
+  <div class="shop-page">
+    <div class="container">
+      <h1 class="page-title">Shop Prints</h1>
+      {printsCollectionId && storeDomain ? (
+        <ShopifyCollection collectionId={printsCollectionId} storeDomain={storeDomain} />
+      ) : (
+        <p class="no-collection">Collection not configured. Please set SHOPIFY_PRINTS_COLLECTION_ID in your .env file.</p>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .shop-page {
+    padding: 60px 0;
+    min-height: calc(100vh - 300px);
+  }
+
+  .page-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+  }
+
+  .no-collection {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+  }
+
+  @media (max-width: 768px) {
+    .shop-page {
+      padding: 40px 0;
+    }
+
+    .page-title {
+      font-size: 36px;
+      margin-bottom: 32px;
+    }
+  }
+</style>
