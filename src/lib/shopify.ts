@@ -1,5 +1,5 @@
-const storeDomain = import.meta.env.SHOPIFY_STORE_DOMAIN || '';
-const accessToken = import.meta.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || '';
+const storeDomain = '8ygcdj-p0.myshopify.com';
+const accessToken = '520b84fb4c682542b64d82a61392f184';
 
 if (!storeDomain || !accessToken) {
   console.warn('Shopify credentials not configured. Products will not be available.');

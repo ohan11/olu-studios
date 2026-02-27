@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ShopifyCollection from '../components/ShopifyCollection.astro';
 
-const storeDomain = import.meta.env.SHOPIFY_STORE_DOMAIN || '';
+const storeDomain = '8ygcdj-p0.myshopify.com';
 const baseUrl = import.meta.env.BASE_URL || '/';
 const homeData = await import('../data/home.json').then(m => m.default).catch(() => ({
   backgroundImage: '/images/stamps.jpeg',
@@ -17,7 +17,7 @@ const bgUrl = homeData.backgroundImage.startsWith('http')
   : `${baseUrl.replace(/\/$/, '')}${homeData.backgroundImage}`;
 
 // Home collection configuration
-const homeCollectionId = import.meta.env.SHOPIFY_HOME_COLLECTION_ID;
+const homeCollectionId = '325811273900';
 
 // Custom styling for Home collection (pink/coral theme)
 const homeOptions = {

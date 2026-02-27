@@ -1,47 +1,48 @@
 ---
 // Header component with logo, navigation dropdown, and cart
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <header class="site-header">
   <div class="header-content">
     <nav class="header-left">
       <div class="nav-dropdown">
-        <a href="/shop" class="nav-link">shop</a>
+        <a href={`${base}/shop`} class="nav-link">shop</a>
         <div class="dropdown-menu">
-          <a href="/shop">all products</a>
-          <a href="/shop/originals">originals</a>
-          <a href="/shop/prints">prints</a>
-          <a href="/shop/olu-airlines">olu airlines</a>
+          <a href={`${base}/shop`}>all products</a>
+          <a href={`${base}/shop/originals`}>originals</a>
+          <a href={`${base}/shop/prints`}>prints</a>
+          <a href={`${base}/shop/olu-airlines`}>olu airlines</a>
         </div>
       </div>
-      <a href="/work" class="nav-link">work</a>
-      <a href="/contact" class="nav-link">contact</a>
+      <a href={`${base}/work`} class="nav-link">work</a>
+      <a href={`${base}/contact`} class="nav-link">contact</a>
     </nav>
-    
+
     <div class="header-center">
-      <a href="/" class="logo">
-        <img src="/images/logo.png" alt="SLU" />
+      <a href={`${base}/`} class="logo">
+        <img src={`${base}/images/logo.png`} alt="SLU" />
       </a>
     </div>
-    
+
     <div class="header-right">
       <!-- Removed profile and cart buttons -->
     </div>
-    
+
     <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
       <span></span>
       <span></span>
       <span></span>
     </button>
   </div>
-  
+
   <nav class="mobile-nav" id="mobile-nav">
-    <a href="/shop">shop all</a>
-    <a href="/shop/originals">shop originals</a>
-    <a href="/shop/prints">shop prints</a>
-    <a href="/shop/olu-airlines">shop olu airlines</a>
-    <a href="/work">work</a>
-    <a href="/contact">contact</a>
+    <a href={`${base}/shop`}>shop all</a>
+    <a href={`${base}/shop/originals`}>shop originals</a>
+    <a href={`${base}/shop/prints`}>shop prints</a>
+    <a href={`${base}/shop/olu-airlines`}>shop olu airlines</a>
+    <a href={`${base}/work`}>work</a>
+    <a href={`${base}/contact`}>contact</a>
   </nav>
 </header>
 
