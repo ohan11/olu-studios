@@ -107,9 +107,15 @@
   }
   
   .nav-dropdown > .nav-link::after {
-    content: ' ▼';
+    content: '▸';
     font-size: 10px;
-    vertical-align: middle;
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s ease;
+  }
+  
+  .nav-dropdown:hover > .nav-link::after {
+    transform: rotate(90deg);
   }
   
   .dropdown-menu {
