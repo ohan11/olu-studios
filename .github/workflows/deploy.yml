@@ -21,9 +21,17 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
-          path: . # The root location of your Astro project inside the repository. (optional)
-          node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 18. (optional)
-          package-manager: npm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+          path: .
+          node-version: 20
+          package-manager: npm@latest
+        env:
+          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+          SHOPIFY_STOREFRONT_ACCESS_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_ACCESS_TOKEN }}
+          SHOPIFY_ORIGINALS_COLLECTION_ID: ${{ secrets.SHOPIFY_ORIGINALS_COLLECTION_ID }}
+          SHOPIFY_PRINTS_COLLECTION_ID: ${{ secrets.SHOPIFY_PRINTS_COLLECTION_ID }}
+          SHOPIFY_AIRLINES_COLLECTION_ID: ${{ secrets.SHOPIFY_AIRLINES_COLLECTION_ID }}
+          SHOPIFY_HOME_COLLECTION_ID: ${{ secrets.SHOPIFY_HOME_COLLECTION_ID }}
+          SHOPIFY_ALL_COLLECTION_ID: ${{ secrets.SHOPIFY_ALL_COLLECTION_ID }}
 
   deploy:
     needs: build
