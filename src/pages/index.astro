@@ -158,15 +158,12 @@ const homeOptions = {
 };
 ---
 
-<Layout title="Olu Studios">
+<Layout title="olu studios">
   <div class="home-page">
     <!-- Hero Section with Background Image -->
     <section class="hero-section">
       <div class="hero-background">
         <img src={bgUrl} alt="" class="hero-bg-image" />
-      </div>
-      <div class="hero-overlay">
-        <h1 class="hero-title">{homeData.title}</h1>
       </div>
     </section>
 
@@ -233,24 +230,6 @@ const homeOptions = {
     object-position: top center;
   }
 
-  .hero-overlay {
-    background: rgba(0, 0, 0, 0.3);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-title {
-    font-size: 72px;
-    font-weight: 700;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    letter-spacing: 2px;
-  }
 
   .home-collection {
     padding: 60px 0;
@@ -294,12 +273,8 @@ const homeOptions = {
 
   @media (max-width: 768px) {
     .hero-section {
-      height: 50vh;
-      min-height: 300px;
-    }
-
-    .hero-title {
-      font-size: 48px;
+      height: 20vh;
+      min-height: 150px;
     }
 
     .home-collection {
