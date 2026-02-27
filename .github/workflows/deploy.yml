@@ -24,14 +24,6 @@ jobs:
           path: .
           node-version: 20
           package-manager: npm@latest
-        env:
-          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
-          SHOPIFY_STOREFRONT_ACCESS_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_ACCESS_TOKEN }}
-          SHOPIFY_ORIGINALS_COLLECTION_ID: ${{ secrets.SHOPIFY_ORIGINALS_COLLECTION_ID }}
-          SHOPIFY_PRINTS_COLLECTION_ID: ${{ secrets.SHOPIFY_PRINTS_COLLECTION_ID }}
-          SHOPIFY_AIRLINES_COLLECTION_ID: ${{ secrets.SHOPIFY_AIRLINES_COLLECTION_ID }}
-          SHOPIFY_HOME_COLLECTION_ID: ${{ secrets.SHOPIFY_HOME_COLLECTION_ID }}
-          SHOPIFY_ALL_COLLECTION_ID: ${{ secrets.SHOPIFY_ALL_COLLECTION_ID }}
 
   deploy:
     needs: build
