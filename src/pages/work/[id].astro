@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProtectedImage from '../../components/ProtectedImage.astro';
+
+export async function getStaticPaths() {
+  const collections = await import('../../data/portfolio/collections.json').then(m => m.default);
+  return collections.map((col) => ({
+    params: { id: col.id },
+    props: { collection: col },
+  }));
+}
+
+const { collection } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL || '/';
+
+function resolveUrl(path: string) {
+  return path.startsWith('http') ? path : `${baseUrl.replace(/\/$/, '')}${path}`;
+}
+---
+
+<Layout title={`${collection.title} - olu studios`}>
+  <div class="collection-page">
+    <div class="container">
+      <h1 class="collection-title">{collection.title}</h1>
+      {collection.description && (
+        <p class="collection-description">{collection.description}</p>
+      )}
+
+      <div class={`image-grid layout-${collection.layout}`}>
+        {collection.images.map((img: string) => (
+          <div class="image-cell">
+            <ProtectedImage src={resolveUrl(img)} alt={collection.title} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .collection-page {
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+  }
+
+  .collection-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+  }
+
+  .collection-description {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-dark);
+    max-width: 680px;
+    margin-bottom: 48px;
+  }
+
+  /* 5-column square grid */
+  .image-grid.layout-grid-5col {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .image-cell {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+
+  .image-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .collection-page {
+      padding: 40px 0;
+    }
+
+    .collection-title {
+      font-size: 32px;
+    }
+
+    .collection-description {
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .image-grid.layout-grid-5col {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+  }
+</style>

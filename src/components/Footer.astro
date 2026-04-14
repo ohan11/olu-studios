@@ -1,29 +1,215 @@
 ---
-// Simple footer component
 ---
 
 <footer class="site-footer">
-  <div class="footer-content">
-    <p>&copy; {new Date().getFullYear()} Olu Studios. All rights reserved.</p>
+  <!-- Wave top edge -->
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill="#FF3160"/>
+    </svg>
+  </div>
+
+  <div class="footer-body">
+    <div class="footer-inner">
+
+      <!-- Policy links + Socials -->
+      <div class="footer-left">
+        <nav class="policy-links">
+          <a href="/refund-policy">Refund Policy</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms-of-service">Terms of Service</a>
+        </nav>
+        <div class="social-list">
+        <a href="https://www.instagram.com/heyolustudio/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="https://www.tiktok.com/@heyolustudio" target="_blank" rel="noopener" class="social-link" aria-label="TikTok">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+          </svg>
+        </a>
+        <a href="https://www.youtube.com/@heyolustudio" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.6 2.8 12 2.8 12 2.8s-4.6 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.2.7 11.4v2.1C.7 15.7 1 18 1 18s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.6 22.2 12 22.2 12 22.2s4.6 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.2.3-4.4v-2.1C23.3 9.2 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/>
+          </svg>
+        </a>
+        </div>
+      </div>
+
+      <!-- Email signup -->
+      <div class="email-col">
+        <p class="footer-tagline">stay in the loop</p>
+        <form class="email-form" onsubmit="return false;">
+          <input type="email" placeholder="your@email.com" class="email-input" required />
+          <button type="submit" class="email-btn">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+
+    <p class="footer-copy">&copy; 2026 OLU</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background: var(--bg-light);
-    border-top: 1px solid #e5e5e5;
-    padding: 32px 20px;
-    margin-top: auto;
+    background: var(--hot-pink);
+    color: #fff;
+    margin-top: 0;
   }
-  
-  .footer-content {
+
+  .footer-wave {
+    display: block;
+    line-height: 0;
+    margin-bottom: -1px;
+  }
+
+  .footer-wave svg {
+    width: 100%;
+    height: 64px;
+    display: block;
+  }
+
+  .footer-body {
+    padding: 16px 24px 40px;
     max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
   }
-  
-  .footer-content p {
-    color: var(--text-light);
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px;
+    padding-bottom: 28px;
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .policy-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .policy-links a {
+    color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    letter-spacing: 0.04em;
+  }
+
+  .policy-links a:hover {
+    color: #fff;
+    opacity: 1;
+  }
+
+  /* Socials */
+  .social-list {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .social-link {
+    color: #fff;
+    display: flex;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .social-link:hover {
+    opacity: 0.75;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* Tagline */
+  .footer-tagline {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 10px;
+  }
+
+  .email-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  /* Email form */
+  .email-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 50%;
+  }
+
+  .email-input {
+    padding: 11px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    outline: none;
+    font-family: inherit;
+    width: 100%;
+  }
+
+  .email-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .email-input:focus {
+    background: rgba(255, 255, 255, 0.32);
+  }
+
+  .email-btn {
+    padding: 11px 20px;
+    background: #fff;
+    color: var(--hot-pink);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.2s ease;
+  }
+
+  .email-btn:hover {
+    opacity: 0.88;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    opacity: 0.55;
+    margin: 0;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .email-col {
+      align-items: stretch;
+    }
   }
 </style>

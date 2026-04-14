@@ -1,0 +1,21 @@
+[
+  {
+    "id": "window-seat",
+    "title": "Window Seat",
+    "description": "A series of paintings inspired by the view from a window seat — fleeting landscapes, shifting light, and the quiet beauty of in-between spaces.",
+    "thumbnail": "/portfolio/window-seat/thumbnail.jpg",
+    "layout": "grid-5col",
+    "images": [
+      "/portfolio/window-seat/1.jpg",
+      "/portfolio/window-seat/2.jpg",
+      "/portfolio/window-seat/3.jpg",
+      "/portfolio/window-seat/4.jpg",
+      "/portfolio/window-seat/5.jpg",
+      "/portfolio/window-seat/6.jpg",
+      "/portfolio/window-seat/7.jpg",
+      "/portfolio/window-seat/8.jpg",
+      "/portfolio/window-seat/9.jpg",
+      "/portfolio/window-seat/10.jpg"
+    ]
+  }
+]

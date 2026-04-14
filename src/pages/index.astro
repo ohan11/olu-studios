@@ -4,6 +4,7 @@ import ShopifyCollection from '../components/ShopifyCollection.astro';
 
 const storeDomain = '8ygcdj-p0.myshopify.com';
 const baseUrl = import.meta.env.BASE_URL || '/';
+const showcase = await import('../data/showcase.json').then(m => m.default);
 const homeData = await import('../data/home.json').then(m => m.default).catch(() => ({
   backgroundImage: '/images/stamps.jpeg',
   title: 'Olu',
@@ -167,30 +168,46 @@ const homeOptions = {
       </div>
     </section>
 
-    <!-- Home Collection -->
-    {homeCollectionId && storeDomain && (
-      <section class="home-collection">
-        <div class="container">
-          <ShopifyCollection 
-            collectionId={homeCollectionId} 
-            storeDomain={storeDomain}
-            options={homeOptions}
-          />
-        </div>
-      </section>
-    )}
+    <!-- Image Grid Section -->
+    <section class="grid-section">
+      <div class="image-grid">
+        {showcase.map((item) => {
+          const imgSrc = item.image.startsWith('http')
+            ? item.image
+            : `${baseUrl.replace(/\/$/, '')}${item.image}`;
+          return (
+            <a href={item.link} class="grid-item">
+              <img src={imgSrc} alt={item.title} />
+              <div class="grid-item-overlay">
+                <span class="grid-item-title">{item.title}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
 
-    <!-- About Olu Section -->
-    <section class="about-section">
-      <div class="container">
-        <div class="about-content">
-          <div class="about-image">
-            <img src={homeData.about.image} alt="About Olu" />
-          </div>
-          <div class="about-text">
-            <h2>About Olu</h2>
-            <p>{homeData.about.text}</p>
-          </div>
+    <!-- Prints Banner -->
+    <section class="prints-banner">
+      <img src={`${baseUrl.replace(/\/$/, '')}/images/la-postcards.jpeg`} alt="" class="prints-banner-img" />
+      <div class="prints-banner-overlay">
+        <p class="prints-banner-text">shop fine art prints</p>
+        <a href={`${baseUrl.replace(/\/$/, '')}/shop/prints`} class="prints-banner-btn">Shop Now</a>
+      </div>
+    </section>
+
+    <!-- Visa Section -->
+    <section class="visa-section">
+      <div class="visa-overlay">
+        <img src={`${baseUrl.replace(/\/$/, '')}/images/visapage.png`} alt="" class="visa-image" />
+        <img src={`${baseUrl.replace(/\/$/, '')}/images/photostrip.jpg`} alt="" class="photostrip" />
+        <div class="visa-text">
+            <p>                                     
+              Olivia Lu is an artist based in NYC.<br />
+              <br />                                                                                         
+              Led by a playful approach to color, she builds shape-shifting worlds where memory becomes its own landscape.<br />                
+              Her work lingers on moments in time, serving as snapshots on how she sees the world.                                              
+            </p> 
         </div>
       </div>
     </section>
@@ -222,6 +239,112 @@ const homeOptions = {
     overflow: hidden;
   }
 
+  /* Prints Banner */
+  .prints-banner {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+  }
+
+  .prints-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .prints-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .prints-banner-text {
+    font-size: 2.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #fff;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    margin: 0;
+  }
+
+  .prints-banner-btn {
+    display: inline-block;
+    padding: 12px 36px;
+    border: 2px solid #fff;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .prints-banner-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+  }
+
+  .visa-section {
+    padding: 40px 24px;
+    display: flex;
+    justify-content: center;
+    background: var(--bg-white);
+  }
+
+  .visa-overlay {
+    position: relative;
+    width: min(780px, 100%);
+    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15));
+  }
+
+  .visa-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .photostrip {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%) rotate(-4deg);
+    height: 75%;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .visa-text {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10%;
+    pointer-events: none;
+  }
+
+  .visa-text p {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #2a2060;
+    text-align: left;
+    line-height: 1.5;
+    margin: 0;
+    transform: translate(-12%, -10%) rotate(-6deg);
+  }
+
   .hero-bg-image {
     position: absolute;
     width: 100%;
@@ -231,45 +354,63 @@ const homeOptions = {
   }
 
 
-  .home-collection {
-    padding: 60px 0;
+  /* Image Grid Section */
+  .grid-section {
+    padding: 32px 0;
   }
 
-  .about-section {
-    padding: 80px 0;
-    background: var(--bg-light);
-  }
-
-  .about-content {
+  .image-grid {
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 60px;
-    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
   }
 
-  .about-image {
-    width: 100%;
+  .grid-item {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 6;
+    overflow: hidden;
+    text-decoration: none;
   }
 
-  .about-image img {
+  .grid-item img {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.4s ease;
   }
 
-  .about-text h2 {
-    font-size: 36px;
+  .grid-item:hover img {
+    transform: scale(1.04);
+  }
+
+  .grid-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .grid-item:hover .grid-item-overlay {
+    opacity: 1;
+  }
+
+  .grid-item-title {
+    color: #fff;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 24px;
-    color: var(--text-dark);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .about-text p {
-    font-size: 18px;
-    line-height: 1.8;
-    color: var(--text-dark);
-  }
+
 
   @media (max-width: 768px) {
     .hero-section {
@@ -277,25 +418,23 @@ const homeOptions = {
       min-height: 150px;
     }
 
-    .home-collection {
+    .grid-section {
       padding: 40px 0;
     }
 
-    .about-section {
-      padding: 60px 0;
+    .visa-section {
+      padding: 48px 16px;
     }
 
-    .about-content {
-      grid-template-columns: 1fr;
-      gap: 40px;
+    .image-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 0 16px;
     }
 
-    .about-text h2 {
-      font-size: 28px;
-    }
-
-    .about-text p {
+    .grid-item-title {
       font-size: 16px;
     }
+
   }
 </style>
