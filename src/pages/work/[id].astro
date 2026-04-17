@@ -45,7 +45,8 @@ const pageTitle = type === 'collection' ? collection.title : item.title;
         <div class={`image-grid layout-${collection.layout}`}>
           {collection.images.map((img: string) => (
             <div class="image-cell">
-              <ProtectedImage src={resolveUrl(img)} alt={collection.title} />
+              <img src={resolveUrl(img)} alt={collection.title} onerror="this.dataset.missing='true'; this.closest('.image-cell').classList.add('missing')" />
+              <span class="coming-soon">boarding soon</span>
             </div>
           ))}
         </div>
@@ -83,18 +84,22 @@ const pageTitle = type === 'collection' ? collection.title : item.title;
   }
 
   .collection-title {
-    font-size: 48px;
-    font-weight: 700;
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    font-weight: 400;
     margin-bottom: 16px;
     color: var(--text-dark);
+    text-transform: lowercase;
   }
 
   .collection-description {
-    font-size: 18px;
-    line-height: 1.7;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    line-height: 1.6;
     color: var(--text-dark);
     max-width: 680px;
     margin-bottom: 48px;
+    text-transform: lowercase;
   }
 
   .image-grid.layout-grid-5col {
@@ -104,14 +109,40 @@ const pageTitle = type === 'collection' ? collection.title : item.title;
   }
 
   .image-cell {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 5 / 7;
     overflow: hidden;
+  }
+
+  .image-cell {
+    background: #f0e8e8;
   }
 
   .image-cell img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+  }
+
+  .image-cell img[data-missing] {
+    display: none;
+  }
+
+  .coming-soon {
+    display: none;
+    font-family: 'VT323', monospace;
+    font-size: 0.95rem;
+    color: #b89090;
+    text-align: center;
+  }
+
+  .image-cell.missing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-cell.missing .coming-soon {
     display: block;
   }
 

@@ -37,7 +37,7 @@
     "image": "/portfolio/showcase/4.jpg",
     "link": "/work/angel",
     "featured": false,
-    "description": "Angel.",
+    "description": "watercolor on paper",
     "images": [
       "/portfolio/showcase/4.jpg"
     ]
@@ -49,7 +49,7 @@
     "image": "/portfolio/showcase/5.jpg",
     "link": "/work/ocean",
     "featured": false,
-    "description": "Ocean.",
+    "description": "acrylic on canvas",
     "images": [
       "/portfolio/showcase/5.jpg"
     ]
@@ -61,7 +61,7 @@
     "image": "/portfolio/showcase/6.jpg",
     "link": "/work/where-are-we-going",
     "featured": false,
-    "description": "Where are we going?",
+    "description": "watercolor and acrylic on paper",
     "images": [
       "/portfolio/showcase/6.jpg"
     ]
