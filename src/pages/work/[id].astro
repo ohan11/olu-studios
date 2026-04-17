@@ -3,41 +3,80 @@ import Layout from '../../layouts/Layout.astro';
 import ProtectedImage from '../../components/ProtectedImage.astro';
 
 export async function getStaticPaths() {
-  const collections = await import('../../data/portfolio/collections.json').then(m => m.default);
-  return collections.map((col) => ({
+  const [collections, items] = await Promise.all([
+    import('../../data/portfolio/collections.json').then(m => m.default),
+    import('../../data/portfolio/items.json').then(m => m.default),
+  ]);
+
+  const collectionPaths = collections.map((col) => ({
     params: { id: col.id },
-    props: { collection: col },
+    props: { type: 'collection' as const, collection: col, item: null },
   }));
+
+  const itemPaths = items
+    .filter((item: any) => item.slug)
+    .map((item: any) => ({
+      params: { id: item.slug },
+      props: { type: 'item' as const, collection: null, item },
+    }));
+
+  return [...collectionPaths, ...itemPaths];
 }
 
-const { collection } = Astro.props;
+const { type, collection, item } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL || '/';
 
 function resolveUrl(path: string) {
   return path.startsWith('http') ? path : `${baseUrl.replace(/\/$/, '')}${path}`;
 }
+
+const pageTitle = type === 'collection' ? collection.title : item.title;
 ---
 
-<Layout title={`${collection.title} - olu studios`}>
-  <div class="collection-page">
-    <div class="container">
-      <h1 class="collection-title">{collection.title}</h1>
-      {collection.description && (
-        <p class="collection-description">{collection.description}</p>
-      )}
+<Layout title={`${pageTitle} - olu studios`}>
 
-      <div class={`image-grid layout-${collection.layout}`}>
-        {collection.images.map((img: string) => (
-          <div class="image-cell">
-            <ProtectedImage src={resolveUrl(img)} alt={collection.title} />
-          </div>
-        ))}
+  {type === 'collection' && (
+    <div class="collection-page">
+      <div class="container">
+        <h1 class="collection-title">{collection.title}</h1>
+        {collection.description && (
+          <p class="collection-description">{collection.description}</p>
+        )}
+        <div class={`image-grid layout-${collection.layout}`}>
+          {collection.images.map((img: string) => (
+            <div class="image-cell">
+              <ProtectedImage src={resolveUrl(img)} alt={collection.title} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
+  )}
+
+  {type === 'item' && (
+    <div class="item-page">
+      <div class="item-inner">
+        <div class="item-images">
+          {item.images.map((img: string) => (
+            <div class="item-image">
+              <img src={resolveUrl(img)} alt={item.title} />
+            </div>
+          ))}
+        </div>
+        <aside class="item-meta">
+          <h1 class="item-title">{item.title}</h1>
+          {item.description && (
+            <p class="item-description">{item.description}</p>
+          )}
+        </aside>
+      </div>
+    </div>
+  )}
+
 </Layout>
 
 <style>
+  /* ── Collection layout ─────────────────────────── */
   .collection-page {
     padding: 60px 0;
     min-height: calc(100vh - 200px);
@@ -58,7 +97,6 @@ function resolveUrl(path: string) {
     margin-bottom: 48px;
   }
 
-  /* 5-column square grid */
   .image-grid.layout-grid-5col {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -77,6 +115,59 @@ function resolveUrl(path: string) {
     display: block;
   }
 
+  /* ── Item detail layout ────────────────────────── */
+  .item-page {
+    padding: 60px 24px 100px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .item-inner {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .item-meta {
+    position: sticky;
+    top: 100px;
+    text-align: left;
+  }
+
+  .item-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin: 0 0 20px;
+    text-transform: lowercase;
+    line-height: 1.2;
+  }
+
+  .item-description {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 0;
+  }
+
+  .item-images {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .item-image img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Mobile ────────────────────────────────────── */
   @media (max-width: 768px) {
     .collection-page {
       padding: 40px 0;
@@ -94,6 +185,23 @@ function resolveUrl(path: string) {
     .image-grid.layout-grid-5col {
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
+    }
+
+    .item-page {
+      padding: 40px 16px 80px;
+    }
+
+    .item-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .item-meta {
+      position: static;
+    }
+
+    .item-title {
+      font-size: 1.5rem;
     }
   }
 </style>

@@ -1,87 +1,65 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProtectedImage from '../components/ProtectedImage.astro';
-import { getPortfolioItems } from '../lib/portfolio';
 
-const portfolioItems = await getPortfolioItems();
-const collections = await import('../data/portfolio/collections.json').then(m => m.default);
+const items = await import('../data/portfolio/items.json').then(m => m.default);
 const baseUrl = import.meta.env.BASE_URL || '/';
 ---
 
 <Layout title="work - olu studios">
   <div class="work-page">
-    <div class="container">
-      <h1 class="page-title">Work</h1>
 
-      {collections.length > 0 && (
-        <section class="collections-section">
-          <div class="collections-grid">
-            {collections.map((col) => {
-              const imgSrc = col.thumbnail.startsWith('http')
-                ? col.thumbnail
-                : `${baseUrl.replace(/\/$/, '')}${col.thumbnail}`;
-              return (
-                <a href={`${baseUrl.replace(/\/$/, '')}/work/${col.id}`} class="collection-item">
-                  <ProtectedImage src={imgSrc} alt={col.title} />
-                  <div class="collection-overlay">
-                    <span class="collection-title">{col.title}</span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-      )}
+    <p class="page-label">✧˖° portfolio ☆彡</p>
 
-      {portfolioItems.length > 0 && (
-        <section class="works-section">
-          <p class="section-label">Works</p>
-          <div class="work-grid">
-            {portfolioItems.map((item) => (
-              <div class="work-item">
-                {item.images.map((image) => (
-                  <ProtectedImage src={image} alt={item.title || 'Artwork'} />
-                ))}
+    <section class="grid-section">
+      <div class="image-grid">
+        {items.map((item) => {
+          const imgSrc = item.image.startsWith('http')
+            ? item.image
+            : `${baseUrl.replace(/\/$/, '')}${item.image}`;
+          return (
+            <a href={item.link} class="grid-item">
+              <img src={imgSrc} alt={item.title} />
+              <div class="grid-item-overlay">
+                <span class="grid-item-title">{item.title}</span>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </a>
+          );
+        })}
+      </div>
+    </section>
 
-      {collections.length === 0 && portfolioItems.length === 0 && (
-        <div class="no-work">
-          <p>Work coming soon!</p>
-        </div>
-      )}
-    </div>
   </div>
 </Layout>
 
 <style>
   .work-page {
-    padding: 60px 0;
+    padding: 40px 0 80px;
     min-height: calc(100vh - 200px);
   }
 
-  .page-title {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 40px;
+  .page-label {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
     color: var(--text-dark);
+    text-align: center;
+    padding: 0 24px 32px;
+    margin: 0;
   }
 
-  /* Collection blocks */
-  .collections-section {
-    margin-bottom: 60px;
+  .grid-section {
+    padding: 0 0 32px;
   }
 
-  .collections-grid {
+  .image-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
   }
 
-  .collection-item {
+  .grid-item {
     position: relative;
     display: block;
     aspect-ratio: 4 / 6;
@@ -89,18 +67,18 @@ const baseUrl = import.meta.env.BASE_URL || '/';
     text-decoration: none;
   }
 
-  .collection-item img {
+  .grid-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
   }
 
-  .collection-item:hover img {
+  .grid-item:hover img {
     transform: scale(1.04);
   }
 
-  .collection-overlay {
+  .grid-item-overlay {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
@@ -111,11 +89,11 @@ const baseUrl = import.meta.env.BASE_URL || '/';
     transition: opacity 0.3s ease;
   }
 
-  .collection-item:hover .collection-overlay {
+  .grid-item:hover .grid-item-overlay {
     opacity: 1;
   }
 
-  .collection-title {
+  .grid-item-title {
     color: #fff;
     font-size: 20px;
     font-weight: 600;
@@ -123,64 +101,15 @@ const baseUrl = import.meta.env.BASE_URL || '/';
     text-transform: uppercase;
   }
 
-  /* Individual works section */
-  .works-section {
-    margin-top: 20px;
-  }
-
-  .section-label {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-light, #888);
-    margin-bottom: 24px;
-  }
-
-  .work-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 32px;
-  }
-
-  .work-item {
-    width: 100%;
-  }
-
-  .work-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .no-work {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--text-light);
-  }
-
   @media (max-width: 768px) {
-    .work-page {
-      padding: 40px 0;
-    }
-
-    .page-title {
-      font-size: 36px;
-      margin-bottom: 32px;
-    }
-
-    .collections-grid {
+    .image-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
+      padding: 0 16px;
     }
 
-    .collection-title {
+    .grid-item-title {
       font-size: 16px;
-    }
-
-    .work-grid {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 20px;
     }
   }
 </style>

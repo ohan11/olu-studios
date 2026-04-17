@@ -1,29 +1,69 @@
 [
   {
-    "id": "portfolio-1",
-    "title": "Los Angeles",
-    "description": "Vintage travel poster",
-    "images": ["/portfolio/los-angeles.jpg"],
-    "date": "2024",
-    "collection": "travel",
-    "shopProductHandle": null
+    "id": "showcase-1",
+    "title": "WINDOW SEAT",
+    "image": "/portfolio/showcase/1.jpg",
+    "link": "/work/window-seat",
+    "featured": true
   },
   {
-    "id": "portfolio-2",
-    "title": "Night Sky",
-    "description": "Abstract night sky painting",
-    "images": ["/portfolio/night-sky.jpg"],
-    "date": "2024",
-    "collection": "abstract",
-    "shopProductHandle": null
+    "id": "showcase-2",
+    "slug": "risograph-postcards",
+    "title": "risograph postcards",
+    "image": "/portfolio/showcase/2.jpg",
+    "link": "/work/risograph-postcards",
+    "featured": true,
+    "description": "Retro-style travel postcards. Imperfectly printed with risograph.",
+    "images": [
+      "/portfolio/showcase/2.jpg"
+    ]
   },
   {
-    "id": "portfolio-3",
-    "title": "City Lights",
-    "description": "Abstract city lights painting",
-    "images": ["/portfolio/city-lights.jpg"],
-    "date": "2024",
-    "collection": "abstract",
-    "shopProductHandle": null
+    "id": "showcase-3",
+    "slug": "risograph-passport",
+    "title": "passport",
+    "image": "/portfolio/showcase/3.jpg",
+    "link": "/work/risograph-passport",
+    "featured": true,
+    "description": "A risograph-printed passport, complete with visa stamps to 12 countries and a baggage tag to olu airlines.",
+    "images": [
+      "/portfolio/showcase/3.jpg"
+    ]
+  },
+  {
+    "id": "showcase-4",
+    "slug": "angel",
+    "title": "angel",
+    "image": "/portfolio/showcase/4.jpg",
+    "link": "/work/angel",
+    "featured": false,
+    "description": "Angel.",
+    "images": [
+      "/portfolio/showcase/4.jpg"
+    ]
+  },
+  {
+    "id": "showcase-5",
+    "slug": "ocean",
+    "title": "ocean",
+    "image": "/portfolio/showcase/5.jpg",
+    "link": "/work/ocean",
+    "featured": false,
+    "description": "Ocean.",
+    "images": [
+      "/portfolio/showcase/5.jpg"
+    ]
+  },
+  {
+    "id": "showcase-6",
+    "slug": "where-are-we-going",
+    "title": "where are we going?",
+    "image": "/portfolio/showcase/6.jpg",
+    "link": "/work/where-are-we-going",
+    "featured": false,
+    "description": "Where are we going?",
+    "images": [
+      "/portfolio/showcase/6.jpg"
+    ]
   }
 ]
