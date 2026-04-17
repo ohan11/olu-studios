@@ -15,9 +15,14 @@
       <!-- Policy links + Socials -->
       <div class="footer-left">
         <nav class="policy-links">
-          <a href="/refund-policy">Refund Policy</a>
-          <a href="/privacy-policy">Privacy Policy</a>
-          <a href="/terms-of-service">Terms of Service</a>
+          <div class="policy-col">
+            <a href="/privacy-policy">privacy policy</a>
+            <a href="/terms-of-service">terms of service</a>
+          </div>
+          <div class="policy-col">
+            <a href="/refund-policy">refund policy</a>
+            <a href="/shipping-policy">shipping policy</a>
+          </div>
         </nav>
         <div class="social-list">
         <a href="https://www.instagram.com/heyolustudio/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
@@ -38,6 +43,13 @@
           </svg>
         </a>
         </div>
+      </div>
+
+      <!-- Middle text -->
+      <div class="footer-middle">
+        <p class="plane-text">it's a bird! it's a plane!</p>
+        <pre>__|__
+*---o--(_)--o---*</pre>
       </div>
 
       <!-- Email signup -->
@@ -82,19 +94,54 @@
 
   .footer-inner {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    gap: 40px;
+    width: 100%;
+    gap: 8px;
     padding-bottom: 28px;
+  }
+
+  .footer-middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .plane-text {
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: #fff;
+    text-align: center;
+    margin: 0 0 6px;
+    opacity: 0.9;
+  }
+
+  .footer-middle pre {
+    font-family: monospace;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0.9;
+    white-space: pre;
+    margin: 0;
   }
 
   .footer-left {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    justify-self: start;
   }
 
   .policy-links {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .policy-col {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -134,7 +181,8 @@
 
   /* Tagline */
   .footer-tagline {
-    font-size: 13px;
+    font-family: 'East Sea Dokdo', sans-serif;
+    font-size: 24px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -145,7 +193,9 @@
   .email-col {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: stretch;
+    justify-self: end;
+    width: 85%;
   }
 
   /* Email form */
@@ -153,7 +203,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 50%;
+    width: 100%;
+    min-width: 200px;
   }
 
   .email-input {
@@ -206,6 +257,10 @@
     .footer-inner {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+
+    .footer-middle {
+      justify-content: flex-start;
     }
 
     .email-col {

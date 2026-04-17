@@ -202,13 +202,11 @@ const homeOptions = {
         <img src={`${baseUrl.replace(/\/$/, '')}/images/visapage.png`} alt="" class="visa-image" />
         <img src={`${baseUrl.replace(/\/$/, '')}/images/photostrip.jpg`} alt="" class="photostrip" />
         <div class="visa-text">
-            <p>                                     
+            <p>
               Olivia Lu is an artist based in NYC.<br />
-              <br />                                                                                         
-              Led by a playful approach to color, she builds shape-shifting worlds where memory becomes its own landscape.<br />                
-              Her work lingers on moments in time, serving as snapshots on how she sees the world.                                              
-            </p> 
+            </p>
         </div>
+        <a href={`${baseUrl.replace(/\/$/, '')}/contact`} class="visa-contact-btn">Get in touch</a>
       </div>
     </section>
   </div>
@@ -328,21 +326,41 @@ const homeOptions = {
     left: 50%;
     right: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
     padding: 10%;
-    pointer-events: none;
+    transform: translate(-4%, -10%) rotate(-6deg);
   }
 
   .visa-text p {
     font-family: 'Reenie Beanie', cursive;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 400;
     color: #2a2060;
     text-align: left;
     line-height: 1.5;
-    margin: 0;
-    transform: translate(-12%, -10%) rotate(-6deg);
+    margin: 0 0 16px;
+    max-width: 55%;
+  }
+
+  .visa-contact-btn {
+    position: absolute;
+    bottom: 22%;
+    left: 68%;
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.1rem;
+    color: #2a2060;
+    border: 1.5px solid #2a2060;
+    padding: 4px 16px;
+    text-decoration: none;
+    transform: rotate(4deg);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .visa-contact-btn:hover {
+    background: #2a2060;
+    color: #fff;
   }
 
   .hero-bg-image {
@@ -424,6 +442,18 @@ const homeOptions = {
 
     .visa-section {
       padding: 48px 16px;
+    }
+
+    .visa-text p {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      margin: 0 0 8px;
+    }
+
+    .visa-contact-btn {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      bottom: 18%;
     }
 
     .image-grid {
