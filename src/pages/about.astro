@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+const baseUrl = import.meta.env.BASE_URL || '/';
+---
+
+<Layout title="about - olu studios">
+  <div class="contact-page">
+    <div class="container">
+      <div class="contact-inner">
+
+        <div class="contact-photo">
+          <img src={`${baseUrl.replace(/\/$/, '')}/images/me.png`} alt="Olivia Lu" />
+        </div>
+
+        <div class="contact-text">
+          <p class="bio">Olivia Lu is an artist based in NYC. Led by a playful approach to color, she builds shape-shifting worlds where memory becomes its own landscape. Her work lingers on moments in time, serving as snapshots on how she sees the world.</p>
+          <a href="mailto:artofolivialu@gmail.com" class="contact-email">artofolivialu@gmail.com</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .contact-page {
+    padding: 80px 0 100px;
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 260px 380px;
+    gap: 64px;
+    align-items: center;
+    margin: 0 auto;
+    width: fit-content;
+  }
+
+  @keyframes jiggle {
+    0%   { transform: rotate(-2deg); }
+    25%  { transform: rotate(3deg); }
+    50%  { transform: rotate(-3deg); }
+    75%  { transform: rotate(3deg); }
+    100% { transform: rotate(-2deg); }
+  }
+
+  .contact-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transform: rotate(-2deg);
+    mix-blend-mode: multiply;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .contact-photo img:hover {
+      animation: jiggle 1.2s ease infinite;
+    }
+  }
+
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .bio {
+    font-size: 15px;
+    line-height: 1.9;
+    color: #555;
+  }
+
+  .contact-email {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--hot-pink);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
+  }
+
+  .contact-email:hover {
+    opacity: 0.75;
+    color: var(--hot-pink);
+  }
+
+  @media (max-width: 768px) {
+    .contact-page {
+      padding: 48px 0 80px;
+    }
+
+    .contact-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .contact-photo img {
+      width: 220px;
+      margin: 0 auto;
+    }
+
+    .bio {
+      font-size: 16px;
+    }
+  }
+</style>
