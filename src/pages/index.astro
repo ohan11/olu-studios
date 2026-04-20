@@ -163,6 +163,11 @@ const homeOptions = {
 
 <Layout title="olu studios">
   <div class="home-page">
+    <!-- Section Label -->
+    <div class="section-intro">
+      <SplitFlap texts={[" NOW BOARDING OLU AIRLINES ", "GO TO GATE 333"]} delay={400} interval={2000} />
+    </div>
+
     <!-- Hero Section with Background Image -->
     <section class="hero-section">
       <div class="hero-background">
@@ -200,11 +205,6 @@ const homeOptions = {
         <a href={`${baseUrl.replace(/\/$/, '')}/shop/prints`} class="prints-banner-btn">Shop Now</a>
       </div>
     </section>
-
-    <!-- Section Label -->
-    <div class="section-intro">
-      <SplitFlap texts={[" NOW BOARDING OLU AIRLINES ", "GO TO GATE 333"]} delay={400} interval={2000} />
-    </div>
 
     <!-- Visa Section -->
     <section class="visa-section">
@@ -394,7 +394,7 @@ const homeOptions = {
   .section-intro {
     display: flex;
     justify-content: center;
-    padding: 32px 24px 0;
+    padding: 12px 24px 0;
     margin: 0;
   }
 

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "la-postcards",
+    "name": "LA Postcards",
+    "description": "Set of 3 risograph-printed LA postcards.",
+    "price": 18,
+    "currency": "USD",
+    "image": "/portfolio/showcase/2.jpg",
+    "stripeLink": "",
+    "tags": ["prints", "risograph", "postcards"],
+    "available": true
+  },
+  {
+    "id": "risograph-passport",
+    "name": "Passport",
+    "description": "A risograph-printed artist passport with visa stamps.",
+    "price": 24,
+    "currency": "USD",
+    "image": "/portfolio/showcase/3.jpg",
+    "stripeLink": "",
+    "tags": ["prints", "risograph"],
+    "available": true
+  }
+]
