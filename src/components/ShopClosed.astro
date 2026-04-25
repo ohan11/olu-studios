@@ -1,0 +1,57 @@
+---
+interface Props {
+  returnDate?: string;
+}
+const { returnDate } = Astro.props;
+---
+
+<div class="shop-closed">
+  <p class="message">shop is closed</p>
+  <p class="subtext">
+    i'm on a flight somewhere.
+    {returnDate
+      ? <>will be returning <span class="date">{returnDate}</span> ✈️</>
+      : <>will be back soon ✈️</>
+    }
+  </p>
+  <p class="subtext">feel free to contact me at <a class="email" href="mailto:artofolivialu@gmail.com">artofolivialu@gmail.com</a></p>
+</div>
+
+<style>
+  .shop-closed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .message {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    color: var(--text-dark);
+    margin: 0;
+  }
+
+  .subtext {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: var(--text-light, #888);
+    margin: 0;
+  }
+
+  .date {
+    color: var(--hot-pink);
+  }
+
+  .email {
+    color: var(--hot-pink);
+    text-decoration: none;
+  }
+
+  .email:hover {
+    text-decoration: underline;
+  }
+</style>

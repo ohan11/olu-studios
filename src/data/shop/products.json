@@ -1,8 +1,8 @@
 [
   {
-    "id": "la-postcards",
-    "name": "LA Postcards",
-    "description": "Set of 3 risograph-printed LA postcards.",
+    "id": "window-seat-1",
+    "name": "window seat 1A",
+    "description": "4x6in giclee fine art print.",
     "price": 18,
     "currency": "USD",
     "image": "/portfolio/showcase/2.jpg",
@@ -19,6 +19,28 @@
     "image": "/portfolio/showcase/3.jpg",
     "stripeLink": "",
     "tags": ["prints", "risograph"],
+    "available": true
+  },
+  {
+    "id": "original-placeholder",
+    "name": "Original Artwork",
+    "description": "",
+    "price": 0,
+    "currency": "USD",
+    "image": "",
+    "stripeLink": "",
+    "tags": ["originals"],
+    "available": true
+  },
+  {
+    "id": "olu-airlines-placeholder",
+    "name": "Olu Airlines Print",
+    "description": "",
+    "price": 0,
+    "currency": "USD",
+    "image": "",
+    "stripeLink": "",
+    "tags": ["olu-airlines"],
     "available": true
   }
 ]

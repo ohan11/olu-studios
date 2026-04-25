@@ -1,52 +1,53 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ShopifyCollection from '../../components/ShopifyCollection.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import ShopClosed from '../../components/ShopClosed.astro';
+import shopConfig from '../../data/shop/config.json';
 
-const storeDomain = '8ygcdj-p0.myshopify.com';
-// TODO: Set the "All Products" collection ID when available
-const allCollectionId = '';
+const products = await import('../../data/shop/products.json').then(m => m.default);
 ---
 
 <Layout title="shop - olu studios">
   <div class="shop-page">
-    <div class="container">
-      <h1 class="page-title">Shop</h1>
-      {allCollectionId && storeDomain ? (
-        <ShopifyCollection collectionId={allCollectionId} storeDomain={storeDomain} />
-      ) : (
-        <p class="no-collection">Collection not configured. Please set SHOPIFY_ALL_COLLECTION_ID in your .env file.</p>
-      )}
-    </div>
+    <p class="page-label">shop</p>
+    {shopConfig.shopOpen ? (
+      <div class="product-grid">
+        {products.map((product: any) => (
+          <ProductCard {...product} />
+        ))}
+      </div>
+    ) : (
+      <ShopClosed returnDate={shopConfig.returnDate} />
+    )}
   </div>
 </Layout>
 
 <style>
   .shop-page {
-    padding: 60px 0;
+    padding: 40px 24px 100px;
+    max-width: 1200px;
+    margin: 0 auto;
     min-height: calc(100vh - 300px);
   }
 
-  .page-title {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 40px;
+  .page-label {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
     color: var(--text-dark);
+    text-align: center;
+    margin: 0 0 32px;
   }
 
-  .no-collection {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-light);
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 24px;
   }
 
   @media (max-width: 768px) {
-    .shop-page {
-      padding: 40px 0;
-    }
-
-    .page-title {
-      font-size: 36px;
-      margin-bottom: 32px;
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 16px;
     }
   }
 </style>

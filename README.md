@@ -1,11 +1,11 @@
 # Olu Studios Website
 
-Artist portfolio and e-commerce site built with Astro and integrated with Shopify Buy Button SDK for checkout functionality.
+Artist portfolio and e-commerce site built with Astro. Checkout is handled via Stripe payment links.
 
 ## Features
 
-- **Home Page**: Background image with "Olu" title, Shopify collection buy buttons, and About section
-- **Shop Pages**: Shop All, Originals, Prints, and Olu Airlines using Shopify Buy Button collections
+- **Home Page**: Background image with "Olu" title, featured shop items, and About section
+- **Shop Pages**: Shop All, Originals, Prints, and Olu Airlines — all managed via a single JSON file
 - **Work Page**: Gallery of artwork images (not for sale)
 - **Contact Page**: Contact information
 - **Announcements**: Auto-rotating slideshow banner at the top
@@ -16,8 +16,6 @@ Artist portfolio and e-commerce site built with Astro and integrated with Shopif
 ### Prerequisites
 
 - Node.js 18+ and npm
-- Shopify store with Buy Button enabled
-- Shopify Storefront API access token
 
 ### Installation
 
@@ -26,33 +24,86 @@ Artist portfolio and e-commerce site built with Astro and integrated with Shopif
 npm install
 ```
 
-2. Create a `.env` file in the root directory:
-```env
-SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
-SHOPIFY_STOREFRONT_ACCESS_TOKEN=your-storefront-access-token
-
-# Collection IDs (get these from Shopify admin -> Settings -> Apps -> Buy Button -> Collections)
-SHOPIFY_HOME_COLLECTION_ID=your-home-collection-id
-SHOPIFY_ALL_COLLECTION_ID=your-all-collection-id
-SHOPIFY_ORIGINALS_COLLECTION_ID=your-originals-collection-id
-SHOPIFY_PRINTS_COLLECTION_ID=your-prints-collection-id
-SHOPIFY_AIRLINES_COLLECTION_ID=your-airlines-collection-id
-```
-
-3. Add your images:
+2. Add your images:
    - Home background: `public/images/home-bg.jpg`
    - Profile picture: `public/images/profile.jpg`
    - Work images: Add to `src/data/portfolio/items.json` and place images in `public/portfolio/`
 
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-5. Build for production:
+4. Build for production:
 ```bash
 npm run build
 ```
+
+## Shop Management
+
+### Opening and Closing the Shop
+
+Edit `src/data/shop/config.json` to toggle the shop on or off:
+
+**Open:**
+```json
+{
+  "shopOpen": true,
+  "returnDate": ""
+}
+```
+
+**Closed** (shows a "shop is closed, i'm on a flight somewhere" message):
+```json
+{
+  "shopOpen": false,
+  "returnDate": "may 5th"
+}
+```
+
+Leave `returnDate` as `""` to show "will be back soon" instead of a specific date.
+
+---
+
+### Adding Products to the Shop
+
+Edit `src/data/shop/products.json`. Each product is an object in the array:
+
+```json
+{
+  "id": "unique-id",
+  "name": "Product Name",
+  "description": "Short description (optional)",
+  "price": 30,
+  "currency": "USD",
+  "image": "/images/your-product-image.jpg",
+  "stripeLink": "https://buy.stripe.com/your-link",
+  "tags": ["prints"],
+  "available": true
+}
+```
+
+**Fields:**
+- `id` — unique slug, no spaces (e.g. `"sunset-print"`)
+- `name` — displayed on the product card
+- `description` — optional subtitle below the name
+- `price` — number, displayed as `$30.00`
+- `image` — path to image in `public/` (e.g. `/images/my-art.jpg`)
+- `stripeLink` — your Stripe payment link URL; leave `""` if not set up yet
+- `tags` — controls which shop page the product appears on:
+  - `"originals"` → `/shop/originals`
+  - `"prints"` → `/shop/prints`
+  - `"olu-airlines"` → `/shop/olu-airlines`
+  - all products appear on `/shop`
+- `available` — set to `false` to show "sold out" instead of the buy button
+
+**Steps to add a new product:**
+1. Add the product image to `public/images/`
+2. Add a new entry to `src/data/shop/products.json` with the right tag
+3. Paste your Stripe payment link into `stripeLink`
+4. Deploy — no other code changes needed
+
+---
 
 ## Content Management
 
@@ -97,17 +148,6 @@ Edit `src/data/home.json`:
   }
 }
 ```
-
-## Shopify Integration
-
-This site uses Shopify Buy Button SDK's collection rendered feature. All product data and checkout is handled by Shopify.
-
-### Setting up Shopify Collections
-
-1. In Shopify admin, go to Settings > Apps > Buy Button
-2. Create collections: Home, All Products, Originals, Prints, Olu Airlines
-3. Get the collection IDs from the Buy Button embed code
-4. Add the collection IDs to your `.env` file
 
 ## Deployment
 

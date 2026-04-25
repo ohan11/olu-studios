@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import ShopClosed from '../../components/ShopClosed.astro';
+import shopConfig from '../../data/shop/config.json';
 
 const allProducts = await import('../../data/shop/products.json').then(m => m.default);
 const products = allProducts.filter((p: any) => p.tags.includes('prints'));
@@ -9,11 +11,15 @@ const products = allProducts.filter((p: any) => p.tags.includes('prints'));
 <Layout title="prints - olu studios">
   <div class="shop-page">
     <p class="page-label">prints</p>
-    <div class="product-grid">
-      {products.map((product: any) => (
-        <ProductCard {...product} />
-      ))}
-    </div>
+    {shopConfig.shopOpen ? (
+      <div class="product-grid">
+        {products.map((product: any) => (
+          <ProductCard {...product} />
+        ))}
+      </div>
+    ) : (
+      <ShopClosed returnDate={shopConfig.returnDate} />
+    )}
   </div>
 </Layout>
 
