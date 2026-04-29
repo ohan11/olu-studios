@@ -10,24 +10,28 @@
     "id": "showcase-2",
     "slug": "risograph-postcards",
     "title": "risograph postcards",
-    "image": "/portfolio/showcase/2.jpg",
+    "image": "/portfolio/risograph/postcards/matterhorn-postcard.jpg",
     "link": "/work/risograph-postcards",
     "featured": true,
     "description": "Retro-style travel postcards. Imperfectly printed with risograph.",
     "images": [
-      "/portfolio/showcase/2.jpg"
+      "/portfolio/risograph/postcards/matterhorn-postcard.jpg",
+      "/portfolio/risograph/postcards/LA-postcard.jpg",
+      "/portfolio/risograph/postcards/santorini-postcard.jpg"
     ]
   },
   {
     "id": "showcase-3",
     "slug": "risograph-passport",
     "title": "passport",
-    "image": "/portfolio/showcase/3.jpg",
+    "image": "/portfolio/risograph/passport/passport-spread.jpg",
     "link": "/work/risograph-passport",
     "featured": true,
     "description": "A risograph-printed passport, complete with visa stamps to 12 countries and a baggage tag to olu airlines.",
     "images": [
-      "/portfolio/showcase/3.jpg"
+      "/portfolio/risograph/passport/passport-spread.jpg",
+      "/portfolio/risograph/passport/olu-airlines-tag.jpg",
+      "/images/stamps.jpeg"
     ]
   },
   {

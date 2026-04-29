@@ -6,15 +6,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <header class="site-header">
   <div class="header-content">
     <nav class="header-left">
-      <div class="nav-dropdown">
-        <a href={`${base}/shop`} class="nav-link">shop</a>
-        <div class="dropdown-menu">
-          <a href={`${base}/shop`}>all products</a>
-          <a href={`${base}/shop/originals`}>originals</a>
-          <a href={`${base}/shop/prints`}>prints</a>
-          <a href={`${base}/shop/olu-airlines`}>olu airlines</a>
-        </div>
-      </div>
+      <a href={`${base}/shop`} class="nav-link">shop</a>
       <a href={`${base}/work`} class="nav-link">work</a>
       <a href={`${base}/about`} class="nav-link">about</a>
     </nav>
@@ -26,7 +18,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <div class="header-right">
-      <!-- Removed profile and cart buttons -->
+      <button class="cart-btn" id="cart-btn" aria-label="Open cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" id="cart-count" style="display:none">0</span>
+      </button>
     </div>
 
     <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
@@ -37,10 +36,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
 
   <nav class="mobile-nav" id="mobile-nav">
-    <a href={`${base}/shop`}>shop all</a>
-    <a href={`${base}/shop/originals`}>shop originals</a>
-    <a href={`${base}/shop/prints`}>shop prints</a>
-    <a href={`${base}/shop/olu-airlines`}>shop olu airlines</a>
+    <a href={`${base}/shop`}>shop</a>
     <a href={`${base}/work`}>work</a>
     <a href={`${base}/about`}>about</a>
   </nav>
@@ -103,62 +99,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     color: var(--hot-pink);
   }
   
-  .nav-dropdown {
-    position: relative;
-  }
-  
-  .nav-dropdown > .nav-link::after {
-    content: '▸';
-    font-size: 10px;
-    display: inline-block;
-    margin-left: 4px;
-    transition: transform 0.2s ease;
-  }
-  
-  .nav-dropdown:hover > .nav-link::after {
-    transform: rotate(90deg);
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    padding: 8px 0;
-    min-width: 180px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-    z-index: 1000;
-  }
-  
-  .nav-dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  
-  .dropdown-menu a {
-    display: block;
-    padding: 10px 20px;
-    font-size: 14px;
-    text-transform: lowercase;
-    color: var(--text-dark);
-    text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-  
-  .dropdown-menu a:hover {
-    background: var(--bg-light);
-    color: var(--hot-pink);
-  }
   
   .header-right {
     flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .cart-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-dark);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+
+  .cart-btn:hover {
+    color: var(--hot-pink);
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: var(--hot-pink);
+    color: #fff;
+    font-family: 'VT323', monospace;
+    font-size: 0.75rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
   }
   
   .mobile-menu-btn {
@@ -226,10 +205,39 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <script>
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileNav = document.getElementById('mobile-nav');
-  
+
   mobileMenuBtn?.addEventListener('click', () => {
     mobileNav?.classList.toggle('active');
     mobileMenuBtn?.classList.toggle('active');
+  });
+
+  const cartBtn = document.getElementById('cart-btn');
+  const cartCount = document.getElementById('cart-count');
+
+  cartBtn?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('cart:open'));
+  });
+
+  // Initialise count from localStorage on page load
+  function updateCount() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('olu-cart') || '[]');
+      const count = cart.reduce((sum: number, i: any) => sum + i.quantity, 0);
+      if (cartCount) {
+        cartCount.textContent = String(count);
+        cartCount.style.display = count > 0 ? 'flex' : 'none';
+      }
+    } catch {}
+  }
+
+  updateCount();
+
+  document.addEventListener('cart:updated', (e: Event) => {
+    const { count } = (e as CustomEvent).detail;
+    if (cartCount) {
+      cartCount.textContent = String(count);
+      cartCount.style.display = count > 0 ? 'flex' : 'none';
+    }
   });
   
 </script>

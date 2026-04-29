@@ -1,0 +1,359 @@
+---
+import shopConfig from '../data/shop/config.json';
+---
+
+<div id="cart-drawer" data-publishable-key={shopConfig.stripePublishableKey}>
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <div class="cart-panel">
+    <div class="cart-header">
+      <span class="cart-title">cart</span>
+      <button class="cart-close" id="cart-close">×</button>
+    </div>
+    <div class="cart-body">
+      <ul class="cart-items" id="cart-items"></ul>
+      <p class="cart-empty" id="cart-empty">your cart is empty</p>
+    </div>
+    <div class="cart-footer" id="cart-footer">
+      <div class="cart-total">
+        <span>total</span>
+        <span id="cart-total-amount"></span>
+      </div>
+      <button class="checkout-btn" id="cart-checkout">checkout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CART_KEY = 'olu-cart';
+
+  interface CartItem {
+    priceId: string;
+    name: string;
+    price: number;
+    currency: string;
+    imgSrc: string;
+    quantity: number;
+  }
+
+  function getCart(): CartItem[] {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+    catch { return []; }
+  }
+
+  function saveCart(items: CartItem[]) {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+    const count = items.reduce((sum, i) => sum + i.quantity, 0);
+    document.dispatchEvent(new CustomEvent('cart:updated', { detail: { count } }));
+    renderCart();
+  }
+
+  function addToCart(item: Omit<CartItem, 'quantity'>) {
+    const cart = getCart();
+    const existing = cart.find(i => i.priceId === item.priceId);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ ...item, quantity: 1 });
+    }
+    saveCart(cart);
+  }
+
+  function updateQuantity(priceId: string, delta: number) {
+    const cart = getCart();
+    const item = cart.find(i => i.priceId === priceId);
+    if (!item) return;
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+      saveCart(cart.filter(i => i.priceId !== priceId));
+    } else {
+      saveCart(cart);
+    }
+  }
+
+  function renderCart() {
+    const cart = getCart();
+    const itemsList = document.getElementById('cart-items')!;
+    const emptyMsg = document.getElementById('cart-empty')!;
+    const footer = document.getElementById('cart-footer')!;
+    const totalEl = document.getElementById('cart-total-amount')!;
+
+    itemsList.innerHTML = '';
+
+    if (cart.length === 0) {
+      emptyMsg.style.display = '';
+      footer.style.display = 'none';
+      return;
+    }
+
+    emptyMsg.style.display = 'none';
+    footer.style.display = '';
+
+    cart.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'cart-item';
+      li.innerHTML = `
+        <img src="${item.imgSrc}" alt="${item.name}" class="cart-item-img" />
+        <div class="cart-item-info">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-price">${new Intl.NumberFormat('en-US', { style: 'currency', currency: item.currency }).format(item.price)}</span>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" data-price-id="${item.priceId}" data-delta="-1">−</button>
+          <span>${item.quantity}</span>
+          <button class="qty-btn" data-price-id="${item.priceId}" data-delta="1">+</button>
+        </div>
+      `;
+      itemsList.appendChild(li);
+    });
+
+    const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    totalEl.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total);
+
+    itemsList.querySelectorAll<HTMLButtonElement>('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        updateQuantity(btn.dataset.priceId!, parseInt(btn.dataset.delta!));
+      });
+    });
+  }
+
+  function openCart() {
+    document.getElementById('cart-drawer')!.classList.add('open');
+  }
+
+  function closeCart() {
+    document.getElementById('cart-drawer')!.classList.remove('open');
+  }
+
+  async function checkout() {
+    const cart = getCart();
+    if (cart.length === 0) return;
+
+    const btn = document.getElementById('cart-checkout') as HTMLButtonElement;
+    btn.textContent = 'redirecting...';
+    btn.disabled = true;
+
+    const publishableKey = document.getElementById('cart-drawer')!.dataset.publishableKey!;
+    const stripe = (window as any).Stripe(publishableKey);
+
+    const { error } = await stripe.redirectToCheckout({
+      lineItems: cart.map(i => ({ price: i.priceId, quantity: i.quantity })),
+      mode: 'payment',
+      successUrl: `${window.location.origin}/shop`,
+      cancelUrl: window.location.href,
+    });
+
+    if (error) {
+      alert(error.message);
+      btn.textContent = 'checkout';
+      btn.disabled = false;
+    }
+  }
+
+  // Event listeners
+  document.addEventListener('cart:add', (e: Event) => {
+    addToCart((e as CustomEvent).detail);
+    openCart();
+  });
+
+  document.addEventListener('cart:open', openCart);
+
+  document.getElementById('cart-close')!.addEventListener('click', closeCart);
+  document.getElementById('cart-overlay')!.addEventListener('click', closeCart);
+  document.getElementById('cart-checkout')!.addEventListener('click', checkout);
+
+  // Init
+  renderCart();
+</script>
+
+<style>
+  #cart-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  #cart-drawer.open {
+    pointer-events: all;
+  }
+
+  .cart-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #cart-drawer.open .cart-overlay {
+    opacity: 1;
+  }
+
+  .cart-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 360px;
+    max-width: 100vw;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
+  }
+
+  #cart-drawer.open .cart-panel {
+    transform: translateX(0);
+  }
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .cart-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+  }
+
+  .cart-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    line-height: 1;
+    padding: 0;
+  }
+
+  .cart-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+  }
+
+  .cart-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cart-item-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 2px;
+    background: #f5f0f0;
+    flex-shrink: 0;
+  }
+
+  .cart-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cart-item-name {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--text-dark);
+    text-transform: lowercase;
+  }
+
+  .cart-item-price {
+    font-family: 'VT323', monospace;
+    font-size: 0.95rem;
+    color: #888;
+  }
+
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+  }
+
+  .qty-btn {
+    background: none;
+    border: 1px solid #ddd;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--text-dark);
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .qty-btn:hover {
+    border-color: var(--hot-pink);
+    color: var(--hot-pink);
+  }
+
+  .cart-empty {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: #aaa;
+    text-align: center;
+    padding: 40px 0;
+    margin: 0;
+  }
+
+  .cart-footer {
+    padding: 16px 24px 24px;
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--hot-pink);
+    color: #fff;
+    border: none;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .checkout-btn:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  .checkout-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+</style>

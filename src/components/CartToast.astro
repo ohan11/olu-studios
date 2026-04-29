@@ -1,0 +1,69 @@
+<div id="cart-toast" aria-live="polite">
+  <img id="cart-toast-img" src="" alt="" />
+  <span id="cart-toast-name"></span>
+</div>
+
+<script>
+  const toast = document.getElementById('cart-toast')!;
+  const toastImg = document.getElementById('cart-toast-img') as HTMLImageElement;
+  const toastName = document.getElementById('cart-toast-name')!;
+  let hideTimer: ReturnType<typeof setTimeout>;
+
+  document.addEventListener('cart:add', (e: Event) => {
+    const { imgSrc, name } = (e as CustomEvent).detail;
+
+    toastImg.src = imgSrc;
+    toastImg.alt = name;
+    toastName.textContent = name;
+
+    clearTimeout(hideTimer);
+    toast.classList.add('visible');
+    hideTimer = setTimeout(() => toast.classList.remove('visible'), 2500);
+  });
+</script>
+
+<style>
+  #cart-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    z-index: 2000;
+    max-width: 260px;
+  }
+
+  #cart-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  #cart-toast img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+    background: #f5f0f0;
+  }
+
+  #cart-toast span {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--text-dark);
+    text-transform: lowercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

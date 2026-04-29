@@ -3,20 +3,29 @@ import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import ShopClosed from '../../components/ShopClosed.astro';
 import shopConfig from '../../data/shop/config.json';
+import type { ShopTag } from '../../data/shop/tags';
+import { hasImage } from '../../lib/productUtils';
 
 const allProducts = await import('../../data/shop/products.json').then(m => m.default);
-const products = allProducts.filter((p: any) => p.tags.includes('originals'));
+const products = allProducts
+  .filter((p: { tags: ShopTag[] }) => p.tags.includes('originals'))
+  .filter((p: any) => hasImage(p))
+  .sort((a: any, b: any) => (a.tier ?? 2) - (b.tier ?? 2));
 ---
 
 <Layout title="originals - olu studios">
   <div class="shop-page">
     <p class="page-label">originals</p>
     {shopConfig.shopOpen ? (
-      <div class="product-grid">
-        {products.map((product: any) => (
-          <ProductCard {...product} />
-        ))}
-      </div>
+      products.length > 0 ? (
+        <div class="product-grid">
+          {products.map((product: any) => (
+            <ProductCard {...product} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">sorry, no originals currently available! :(</p>
+      )
     ) : (
       <ShopClosed returnDate={shopConfig.returnDate} />
     )}
@@ -37,6 +46,14 @@ const products = allProducts.filter((p: any) => p.tags.includes('originals'));
     color: var(--text-dark);
     text-align: center;
     margin: 0 0 32px;
+  }
+
+  .empty {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: #888;
+    text-align: center;
+    padding: 60px 0;
   }
 
   .product-grid {

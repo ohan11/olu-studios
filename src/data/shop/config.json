@@ -1,4 +1,5 @@
 {
   "shopOpen": false,
-  "returnDate": ""
+  "returnDate": "",
+  "stripePublishableKey": "pk_live_51TKlbsDID1Kn0HFyZr8dj1rYN6FTJo3VwtF7Y1C8puCHlJ6qe9u6GqKTQHuUTzxsuh28WKnKe7CeaJRmf38bcuWT0071Bg3CZg"
 }

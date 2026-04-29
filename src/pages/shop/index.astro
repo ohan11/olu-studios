@@ -3,24 +3,66 @@ import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import ShopClosed from '../../components/ShopClosed.astro';
 import shopConfig from '../../data/shop/config.json';
+import { SHOP_TAGS } from '../../data/shop/tags';
+import type { ShopTag } from '../../data/shop/tags';
+import { hasImage } from '../../lib/productUtils';
 
 const products = await import('../../data/shop/products.json').then(m => m.default);
+const validProducts = products
+  .filter((p: { tags: ShopTag[] }) => p.tags.every(tag => (SHOP_TAGS as readonly string[]).includes(tag)))
+  .filter((p: any) => hasImage(p))
+  .sort((a: any, b: any) => (a.tier ?? 2) - (b.tier ?? 2));
 ---
 
 <Layout title="shop - olu studios">
   <div class="shop-page">
     <p class="page-label">shop</p>
     {shopConfig.shopOpen ? (
-      <div class="product-grid">
-        {products.map((product: any) => (
-          <ProductCard {...product} />
-        ))}
-      </div>
+      <>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">all</button>
+          {SHOP_TAGS.map(tag => (
+            <button class="filter-btn" data-filter={tag}>{tag.replace('-', ' ')}</button>
+          ))}
+        </div>
+        <div class="product-grid">
+          {validProducts.map((product: any) => (
+            <div class="product-wrapper" data-tags={product.tags.join(' ')}>
+              <ProductCard {...product} />
+            </div>
+          ))}
+        </div>
+        <p class="empty" id="empty-msg" style="display:none">sorry, nothing in that category currently available! :(</p>
+      </>
     ) : (
       <ShopClosed returnDate={shopConfig.returnDate} />
     )}
   </div>
 </Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const wrappers = document.querySelectorAll<HTMLElement>('.product-wrapper');
+
+  const emptyMsg = document.getElementById('empty-msg') as HTMLElement;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter!;
+      let visible = 0;
+      wrappers.forEach(wrapper => {
+        const tags = wrapper.dataset.tags!.split(' ');
+        const show = filter === 'all' || tags.includes(filter);
+        wrapper.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      emptyMsg.style.display = visible === 0 ? '' : 'none';
+    });
+  });
+</script>
 
 <style>
   .shop-page {
@@ -35,7 +77,42 @@ const products = await import('../../data/shop/products.json').then(m => m.defau
     font-size: 1.6rem;
     color: var(--text-dark);
     text-align: center;
-    margin: 0 0 32px;
+    margin: 0 0 24px;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .filter-btn {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    padding: 4px 16px;
+    border: 1px solid var(--text-dark);
+    background: transparent;
+    color: var(--text-dark);
+    cursor: pointer;
+    border-radius: 2px;
+    text-transform: lowercase;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--hot-pink);
+    border-color: var(--hot-pink);
+    color: #fff;
+  }
+
+  .empty {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: #888;
+    text-align: center;
+    padding: 60px 0;
   }
 
   .product-grid {
